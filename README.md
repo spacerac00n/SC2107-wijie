@@ -124,6 +124,8 @@ During movement, hold a bump switch: both wheels should stop when the 10 Hz chec
 - To test: refresh and clean `Lab4_TimerCapture_Tach`, select Debug, support the wheels clear of the table, turn on battery power, and run without breakpoints. After the initial pause, press and release LaunchPad SW1 or SW2 once. Both wheels then run forward continuously. Watch `Done0`, `Done2`, `Period0`, `Period2`, `RightRPM`, and `LeftRPM` with Continuous Refresh. Turn off robot battery power to stop the wheels after testing.
 - The tachometer program has no SW1/SW2 or bump-switch stop control. The human confirmed that turning off battery power stops the wheels. USB may stay connected. Do not rely on CCS Pause to stop hardware PWM.
 - Tachometer counters, period values, and RPM values still need confirmation. Wheel motion alone does not verify speed measurement.
+- Reported tachometer readings: `Period0 = 22888`, `Period2 = 24399`, `RightRPM = 87`, `LeftRPM = 84`. The right pair matches integer division (`2000000 / 22888 = 87`). The left period would give 81 RPM, so that pair needs a consistent snapshot before marking verification complete.
+- Continuous Refresh can read a period and its RPM at different moments. For an arithmetic check, support the wheels clear of the table, pause the processor once, read the stable values, and turn off battery power afterward. CPU Pause alone does not stop the wheels.
 
 ### Lab 5
 
