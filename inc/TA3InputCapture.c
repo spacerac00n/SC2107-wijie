@@ -115,7 +115,7 @@ void TimerA3Capture_Init(void(*task0)(uint16_t time), void(*task2)(uint16_t time
     TIMER_A3->EX0 &= ~0x0007;
 
     // priority 2 for TA3.0 and TA3.x. Four INTs per IP[] register. Only MS 3 bits valid.
-    NVIC->IP[2] = (NVIC->IP[3]&0x0000FFFF)|0x40400000;
+    NVIC->IP[3] = (NVIC->IP[3]&0x0000FFFF)|0x40400000;
 
     // interrupts enabled in the main program after all devices initialized
     NVIC->ISER[0] |= 0x0000C000; // enable interrupt 15 (TA3.x) and 14 (TA3.0) in NVIC

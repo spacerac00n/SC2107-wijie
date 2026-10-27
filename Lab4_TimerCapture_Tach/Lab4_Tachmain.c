@@ -63,18 +63,24 @@ policies, either expressed or implied, of the FreeBSD Project.
 
 //#define PERIOD 1000  // must be even
 
-uint16_t Period0;              // (1/SMCLK) units = 83.3 ns units
-uint16_t First0=0;             // Timer A3 first edge, P10.4
-uint32_t Done0=0;              // set each rising
+#define RPM_FACTOR 2000000u    // 12,000,000 timer ticks/s * 60 / 360 pulses/rev
 
-uint16_t Period2;              // (1/SMCLK) units = 83.3 ns units
-uint16_t First2=0;             // Timer A3 first edge, P8.2
-uint32_t Done2=0;              // set each rising
+volatile uint32_t RightRPM=0, LeftRPM=0;
+volatile uint16_t Period0;     // Right wheel, (1/SMCLK) units = 83.3 ns
+uint16_t First0=0;             // Timer A3 first edge, P10.4
+volatile uint32_t Done0=0;     // incremented on each rising edge
+
+volatile uint16_t Period2;     // Left wheel, (1/SMCLK) units = 83.3 ns
+uint16_t First2=0;             // Timer A3 first edge, P10.5 on RSLK MAX
+volatile uint32_t Done2=0;     // incremented on each rising edge
 
 // max period is (2^16-1)*83.3 ns = 5.4612 ms
 // min period determined by time to run ISR, which is about 1 us
 void PeriodMeasure0(uint16_t time){
-  Period0 = (time - First0)&0xFFFF; // 16 bits, 83.3 ns resolution
+  if(Done0 != 0){             // Two edges are needed for a complete period
+    Period0 = (time - First0)&0xFFFF;
+    RightRPM = (Period0 != 0) ? RPM_FACTOR / Period0 : 0;
+  }
   First0 = time;                    // setup for next
   Done0++;
 }
@@ -82,7 +88,10 @@ void PeriodMeasure0(uint16_t time){
 // max period is (2^16-1)*83.3 ns = 5.4612 ms
 // min period determined by time to run ISR, which is about 1 us
 void PeriodMeasure2(uint16_t time){
-  Period2 = (time - First2)&0xFFFF; // 16 bits, 83.3 ns resolution
+  if(Done2 != 0){
+    Period2 = (time - First2)&0xFFFF;
+    LeftRPM = (Period2 != 0) ? RPM_FACTOR / Period2 : 0;
+  }
   First2 = time;                    // setup for next
   Done2++;
 }
@@ -109,8 +118,12 @@ void main(void){
     while(1){
       WaitForInterrupt();
       main_count++;
-      if(main_count%1000){
-          UART0_OutString("Period0 = ");UART0_OutUDec5(Period0);UART0_OutString(" Period2 = ");UART0_OutUDec5(Period2);UART0_OutString(" \r\n");
+      if(main_count%1000 == 0){
+          UART0_OutString("Period0 = ");UART0_OutUDec5(Period0);
+          UART0_OutString(" Period2 = ");UART0_OutUDec5(Period2);
+          UART0_OutString(" Right RPM = ");UART0_OutUDec5(RightRPM);
+          UART0_OutString(" Left RPM = ");UART0_OutUDec5(LeftRPM);
+          UART0_OutString("\r\n");
       }
     }
 }

@@ -115,6 +115,13 @@ During movement, hold a bump switch: both wheels should stop when the 10 Hz chec
 - For calibration, collect settled readings at 5 cm intervals from 5 to 50 cm for each sensor. Measure from the sensor face to the obstacle, not from the front of the robot. Each sensor must be measured separately at the same physical distances.
 - The conversion functions used by this project must return centimeters. Zero distances printed by UART are expected until these functions are implemented; use `nl`, `nc`, and `nr` to collect calibration data.
 - Fit and verify each sensor separately using its measured data. Do not assume all three sensors share one calibration curve.
+- IR calibration is deferred because it depends on the physical robot. The three IR conversion functions remain unchanged until calibration readings are available.
+- Tachometer/RPM code is implemented; physical verification is pending. Right wheel uses P10.4/Timer_A3 CCR0 (`Period0`, `RightRPM`); left wheel uses P10.5/CCR1 (`Period2`, `LeftRPM`). The `Period2` name is inherited from the older starter code; RSLK MAX uses channel 1 for that input.
+- The standard encoder produces 360 rising-edge pulses per wheel revolution. Timer_A3 counts at 12 MHz, so wheel RPM = `12000000 * 60 / (360 * period)` = `2000000 / period`. Source: [TI tachometer lecture, slide 17](https://www.ti.com/lit/ml/sekp140/sekp140.pdf).
+- The first edge only establishes a timestamp. RPM is calculated from the second edge onward; a zero period returns zero instead of dividing by zero. RPM uses whole-number division.
+- The current 16-bit timer wraps every 5.46 ms. A measured pulse interval must be shorter than that (wheel speed above about 31 RPM). This simple implementation retains the last RPM if pulses stop; it does not implement a stopped-wheel timeout.
+- Corrected Timer_A3 priority setup to use `NVIC->IP[3]` for IRQ14/IRQ15. Removed the unused `Bump.c` link from the tachometer project to avoid its undefined `bump_data` dependency. Fixed UART output to run every 1000 foreground wake-ups instead of on 999 out of every 1000.
+- To test: refresh and clean `Lab4_TimerCapture_Tach`, select Debug, support the wheels clear of the table, turn on battery power, and run without breakpoints. After the initial pause, press and release LaunchPad SW1 or SW2 once. Both wheels then run forward continuously. Watch `Done0`, `Done2`, `Period0`, `Period2`, `RightRPM`, and `LeftRPM` with Continuous Refresh. Turn off robot battery power to stop the wheels after testing.
 
 ### Lab 5
 
