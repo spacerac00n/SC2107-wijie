@@ -70,7 +70,7 @@ All eight sensors over white gives input `00`, so the color depends on the previ
 ### Lab 3
 
 - Three main items: SysTick sensor sampling, GPIO bump interrupts, and motor/PWM integration.
-- The existing code already implements SysTick reflectance sampling, GPIO bump interrupts, and motor/PWM integration. Verify the existing code before making changes. Reflectance and all six bump sensor tests have passed on the robot. Motor/PWM verification is pending.
+- The existing code already implements SysTick reflectance sampling, GPIO bump interrupts, and motor/PWM integration. Verify the existing code before making changes. Reflectance, all six bump sensors, and wheel movement have passed physical testing. Bump-triggered motor stopping has not been separately confirmed.
 - SysTick runs every 1 ms. `Reflectance_Start()` charges the sensors at count 0; `Reflectance_End()` reads them at count 1. This repeats every 10 ms.
 - The current sensor project is at section 6.3.2: bump switches use falling-edge Port 4 interrupts, not SysTick polling. The earlier section 6.3.1 bump-polling exercise is a separate stage.
 - Reflectance bits use `1 = black`. Bump bits use `0 = pressed`, because the bump switches have pull-up resistors.
@@ -108,7 +108,13 @@ During movement, hold a bump switch: both wheels should stop when the 10 Hz chec
 
 ### Lab 4
 
-No lessons recorded yet.
+- Two main items: IR distance-sensor calibration through ADC and tachometer speed measurement through timer capture.
+- ADC sampling and filtering are already provided in `Lab4_ADC_IRSensors`. `LeftConvert()`, `CenterConvert()`, and `RightConvert()` in `inc/IRDistance.c` are still placeholders that return zero. Calibration measurements are needed before implementing them.
+- In CCS Expressions, watch `nl` (left, P9.1/ADC16), `nc` (center, P4.1/ADC12), and `nr` (right, P9.0/ADC17) in decimal. These are filtered ADC counts, not distances. The 14-bit ADC range is 0–16383.
+- Use Debug configuration, battery power on, no breakpoints, and Continuous Refresh. Move a flat obstacle along each sensor's viewing direction and confirm the corresponding reading changes.
+- For calibration, collect settled readings at 5 cm intervals from 5 to 50 cm for each sensor. Measure from the sensor face to the obstacle, not from the front of the robot. Each sensor must be measured separately at the same physical distances.
+- The conversion functions used by this project must return centimeters. Zero distances printed by UART are expected until these functions are implemented; use `nl`, `nc`, and `nr` to collect calibration data.
+- Fit and verify each sensor separately using its measured data. Do not assume all three sensors share one calibration curve.
 
 ### Lab 5
 
