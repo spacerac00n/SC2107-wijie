@@ -50,6 +50,7 @@ Keep the Learning section updated whenever the human learns something, asks for 
 - The FSM reads the center pair with `(Reflectance_Read(1000) >> 3) & 0x03`. Input bit 1 is P7.4 (left sensor); bit 0 is P7.3 (right sensor).
 - FSM input `11` gives yellow (straight), `01` gives green (turn right), and `10` gives red (turn left). These LEDs simulate motors; the robot does not drive in this lab.
 - State names describe the robot's position: Left means the robot is left of the line and must turn right. Right means it must turn left.
+- Left of line = robot needs to steer right = left wheel forward/faster than the right wheel.
 - A one-sensor reading should keep the correct turn, rather than alternate between turning and going straight. The turn must also switch directly if the opposite sensor detects black.
 - When input is `00`, the FSM keeps its previous turn direction. If the previous state was Center, it defaults to turning left. This is a search choice, not a guarantee that the line will be found again.
 - The state delay is 500 ms for visible LED testing. Reducing it to 10 ms makes the wait 50 times shorter and allows faster corrections. Sensor-read time and, in later labs, motor response also affect the behavior.
