@@ -136,6 +136,16 @@ Calibration table (`*` means estimated; all unmarked points were supplied as mea
 
 For distance verification, build and debug `Lab4_ADC_IRSensors` in Debug configuration with battery power on. Open the XDS110 Application/User UART serial port at 115200 baud, 8 data bits, no parity, 1 stop bit, and no flow control. Run without breakpoints and compare the printed left/center/right distances with a ruler at 10, 20, 30, 40, and 50 cm, measuring each sensor separately from its face along its viewing direction.
 
+CCS serial Terminal steps:
+
+1. Keep the robot connected by USB. In Windows, right-click Start, open Device Manager, and expand Ports (COM & LPT).
+2. Find `XDS110 Class Application/User UART (COMx)` and note its COM number. Do not select the Auxiliary Data Port.
+3. In CCS, open View > Terminal. In that panel, click Open a Terminal (hover over the small toolbar icons to identify it).
+4. Choose Serial Terminal and the COM number from Device Manager. Set baud rate 115200, data bits 8, parity None, stop bits 1, and flow control None. Click OK.
+5. Build/debug `Lab4_ADC_IRSensors`, turn on battery power, remove breakpoints, and click Resume. Text should update about once a second; the printed order is left, center, right.
+6. Place a flat obstacle 20 cm from one sensor's face along its viewing direction. Check its matching printed value, then repeat separately for the other sensors and distances.
+7. A blank Terminal is a connection/run issue to check first. Recheck the COM number, connected Terminal status, and whether the processor is Running. Close any other program using that COM port. Garbled text suggests a baud-rate or clock-setting mismatch.
+
 - Tachometer/RPM code is implemented; physical verification is pending. Right wheel uses P10.4/Timer_A3 CCR0 (`Period0`, `RightRPM`); left wheel uses P10.5/CCR1 (`Period2`, `LeftRPM`). The `Period2` name is inherited from the older starter code; RSLK MAX uses channel 1 for that input.
 - The standard encoder produces 360 rising-edge pulses per wheel revolution. Timer_A3 counts at 12 MHz, so wheel RPM = `12000000 * 60 / (360 * period)` = `2000000 / period`. Source: [TI tachometer lecture, slide 17](https://www.ti.com/lit/ml/sekp140/sekp140.pdf).
 - The first edge only establishes a timestamp. RPM is calculated from the second edge onward; a zero period returns zero instead of dividing by zero. RPM uses whole-number division.
