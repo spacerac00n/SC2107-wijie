@@ -70,26 +70,41 @@ All eight sensors over white gives input `00`, so the color depends on the previ
 ### Lab 3
 
 - Three main items: SysTick sensor sampling, GPIO bump interrupts, and motor/PWM integration.
-- The existing code already implements SysTick reflectance sampling, GPIO bump interrupts, and motor/PWM integration. Verify the existing code before making changes. Physical Lab 3 checks are pending.
+- The existing code already implements SysTick reflectance sampling, GPIO bump interrupts, and motor/PWM integration. Verify the existing code before making changes. Reflectance and all six bump sensor tests have passed on the robot. Motor/PWM verification is pending.
 - SysTick runs every 1 ms. `Reflectance_Start()` charges the sensors at count 0; `Reflectance_End()` reads them at count 1. This repeats every 10 ms.
 - The current sensor project is at section 6.3.2: bump switches use falling-edge Port 4 interrupts, not SysTick polling. The earlier section 6.3.1 bump-polling exercise is a separate stage.
 - Reflectance bits use `1 = black`. Bump bits use `0 = pressed`, because the bump switches have pull-up resistors.
 - `Bump_Read()` packs P4.0, P4.2, P4.3, P4.5, P4.6, and P4.7 into bits 0 through 5. No switches pressed gives `0x3F`; all six pressed gives `0x00`.
 - Watch `reflectance_data`, `bump_data`, and `MainCount` in CCS. Let the program run with Continuous Refresh; do not pause between reflectance charging and reading.
 
-| Switch pressed alone | GPIO pin | Expected `bump_data` (binary) | Hex |
-|---|---|---|---|
-| None | — | `111111` | `0x3F` |
-| Bump0, robot's rightmost | P4.0 | `111110` | `0x3E` |
-| Bump1 | P4.2 | `111101` | `0x3D` |
-| Bump2 | P4.3 | `111011` | `0x3B` |
-| Bump3 | P4.5 | `110111` | `0x37` |
-| Bump4 | P4.6 | `101111` | `0x2F` |
-| Bump5, robot's leftmost | P4.7 | `011111` | `0x1F` |
+| Switch pressed alone | GPIO pin | Bit cleared in `bump_data` | Expected binary | Hex |
+|---|---|---|---|---|
+| None, when sampled | — | None | `00111111` | `0x3F` |
+| Bump0, robot's rightmost | P4.0 | Bit 0 | `00111110` | `0x3E` |
+| Bump1 | P4.2 | Bit 1 | `00111101` | `0x3D` |
+| Bump2 | P4.3 | Bit 2 | `00111011` | `0x3B` |
+| Bump3 | P4.5 | Bit 3 | `00110111` | `0x37` |
+| Bump4 | P4.6 | Bit 4 | `00101111` | `0x2F` |
+| Bump5, robot's leftmost | P4.7 | Bit 5 | `00011111` | `0x1F` |
+
+Pressing BumpX clears bit X to zero in the packed result; the other released switches remain one. Pressing several switches clears several bits. For example, Bump0 and Bump5 together give `00011110` (`0x1E`).
 
 Bits 7 and 6 are always zero. These values describe the switch states when sampled. In the current interrupt version, `bump_data` holds the last press-event sample; release does not trigger a refresh. It also starts at zero until the first press event, so do not treat its initial zero as a live reading of all six switches.
 
 For sensor verification, use `Lab3_Bump_Reflectance_Systick` with the Debug build, battery power on, no breakpoints, and Continuous Refresh in Expressions. Watch `reflectance_data`, `bump_data`, and `MainCount`. Check all eight reflectance bits and press each bump switch separately. `MainCount` should keep increasing.
+
+Motor verification uses `Lab3_TimerCompare_Motor` with the Debug build, battery power on, and wheels supported clear of the table. Remove breakpoints and let the program run.
+
+| Press and release LaunchPad SW1 or SW2 | Expected movement | Left wheel | Right wheel |
+|---|---|---|---|
+| First time | Forward, then stop | Forward | Forward |
+| Second time | Backward, then stop | Backward | Backward |
+| Third time | Turn left, then stop | Backward | Forward |
+| Fourth time | Turn right, then stop | Forward | Backward |
+
+Each movement lasts about one second. After stopping, the program waits for another LaunchPad button press and release. The sequence repeats after the fourth movement.
+
+During movement, hold a bump switch: both wheels should stop when the 10 Hz check detects it, nominally within about 100 ms. Repeat for all six switches. The current code can resume motion on release if the one-second movement period has not ended; it does not latch an emergency stop. Do not use debugger Pause as the motor-stop test, because hardware PWM can continue while the CPU is halted.
 
 ### Lab 4
 
