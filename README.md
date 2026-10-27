@@ -69,7 +69,27 @@ All eight sensors over white gives input `00`, so the color depends on the previ
 
 ### Lab 3
 
-No lessons recorded yet.
+- Three main items: SysTick sensor sampling, GPIO bump interrupts, and motor/PWM integration.
+- The existing code already implements SysTick reflectance sampling, GPIO bump interrupts, and motor/PWM integration. Verify the existing code before making changes. Physical Lab 3 checks are pending.
+- SysTick runs every 1 ms. `Reflectance_Start()` charges the sensors at count 0; `Reflectance_End()` reads them at count 1. This repeats every 10 ms.
+- The current sensor project is at section 6.3.2: bump switches use falling-edge Port 4 interrupts, not SysTick polling. The earlier section 6.3.1 bump-polling exercise is a separate stage.
+- Reflectance bits use `1 = black`. Bump bits use `0 = pressed`, because the bump switches have pull-up resistors.
+- `Bump_Read()` packs P4.0, P4.2, P4.3, P4.5, P4.6, and P4.7 into bits 0 through 5. No switches pressed gives `0x3F`; all six pressed gives `0x00`.
+- Watch `reflectance_data`, `bump_data`, and `MainCount` in CCS. Let the program run with Continuous Refresh; do not pause between reflectance charging and reading.
+
+| Switch pressed alone | GPIO pin | Expected `bump_data` (binary) | Hex |
+|---|---|---|---|
+| None | — | `111111` | `0x3F` |
+| Bump0, robot's rightmost | P4.0 | `111110` | `0x3E` |
+| Bump1 | P4.2 | `111101` | `0x3D` |
+| Bump2 | P4.3 | `111011` | `0x3B` |
+| Bump3 | P4.5 | `110111` | `0x37` |
+| Bump4 | P4.6 | `101111` | `0x2F` |
+| Bump5, robot's leftmost | P4.7 | `011111` | `0x1F` |
+
+Bits 7 and 6 are always zero. These values describe the switch states when sampled. In the current interrupt version, `bump_data` holds the last press-event sample; release does not trigger a refresh. It also starts at zero until the first press event, so do not treat its initial zero as a live reading of all six switches.
+
+For sensor verification, use `Lab3_Bump_Reflectance_Systick` with the Debug build, battery power on, no breakpoints, and Continuous Refresh in Expressions. Watch `reflectance_data`, `bump_data`, and `MainCount`. Check all eight reflectance bits and press each bump switch separately. `MainCount` should keep increasing.
 
 ### Lab 4
 
