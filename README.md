@@ -54,6 +54,18 @@ Keep the Learning section updated whenever the human learns something, asks for 
 - When input is `00`, the FSM keeps its previous turn direction. If the previous state was Center, it defaults to turning left. This is a search choice, not a guarantee that the line will be found again.
 - The state delay is 500 ms for visible LED testing. Reducing it to 10 ms makes the wait 50 times shorter and allows faster corrections. Sensor-read time and, in later labs, motor response also affect the behavior.
 
+FSM color reference: only P7.3 and P7.4 affect the FSM. The other six sensors can be over black or white without changing its input.
+
+| RGB color | FSM state | Center sensors over black | Meaning |
+|---|---|---|---|
+| Yellow (red + green) | Center | Both P7.3 and P7.4 | Line centered; simulate going straight. All eight over black also gives this result. |
+| Green | Left | P7.3 only; P7.4 over white | Robot is left of the line; simulate turning right. |
+| Red | Right | P7.4 only; P7.3 over white | Robot is right of the line; simulate turning left. |
+| Green | Left | Neither, after Left/green | Line lost; keep searching right. |
+| Red | Right | Neither, after Right/red or Center/yellow | Line lost; keep searching left, or start the default left search. |
+
+All eight sensors over white gives input `00`, so the color depends on the previous state. These are the RGB LED colors; the separate red heartbeat LED is not the FSM output.
+
 ### Lab 3
 
 No lessons recorded yet.
