@@ -37,7 +37,7 @@ Keep the Learning section updated whenever the human learns something, asks for 
 ### Lab 2
 
 - Two main items: the GPIO reflectance driver and the FSM.
-- Reflectance bit readings have been verified on the robot. The FSM is implemented but still needs physical verification.
+- Both main Lab 2 items are physically verified: the reflectance bit readings and the FSM's sensor-to-color behavior, including the line-lost cases.
 - Turn on the robot's battery power. USB power to the LaunchPad alone does not confirm that the sensors are powered.
 - `Data` contains eight sensor bits. `1` means black and `0` means white. The leftmost bit is P7.7 and the rightmost bit is P7.0.
 - Example: `00011000` means the two center sensors, P7.4 and P7.3, detect black. All white gives `0x00`; all black gives `0xFF`.
