@@ -122,6 +122,8 @@ During movement, hold a bump switch: both wheels should stop when the 10 Hz chec
 - The current 16-bit timer wraps every 5.46 ms. A measured pulse interval must be shorter than that (wheel speed above about 31 RPM). This simple implementation retains the last RPM if pulses stop; it does not implement a stopped-wheel timeout.
 - Corrected Timer_A3 priority setup to use `NVIC->IP[3]` for IRQ14/IRQ15. Removed the unused `Bump.c` link from the tachometer project to avoid its undefined `bump_data` dependency. Fixed UART output to run every 1000 foreground wake-ups instead of on 999 out of every 1000.
 - To test: refresh and clean `Lab4_TimerCapture_Tach`, select Debug, support the wheels clear of the table, turn on battery power, and run without breakpoints. After the initial pause, press and release LaunchPad SW1 or SW2 once. Both wheels then run forward continuously. Watch `Done0`, `Done2`, `Period0`, `Period2`, `RightRPM`, and `LeftRPM` with Continuous Refresh. Turn off robot battery power to stop the wheels after testing.
+- The tachometer program has no SW1/SW2 or bump-switch stop control. The human confirmed that turning off battery power stops the wheels. USB may stay connected. Do not rely on CCS Pause to stop hardware PWM.
+- Tachometer counters, period values, and RPM values still need confirmation. Wheel motion alone does not verify speed measurement.
 
 ### Lab 5
 
