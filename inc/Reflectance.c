@@ -100,11 +100,12 @@ uint8_t Reflectance_Center(uint32_t time) {
   int32_t position = 0;
   int32_t sum = 0;
   int32_t count = 0;
+  int i;
 
   int32_t W[8] = {334, 238, 143, 48, -48, -143, -238, -334};
 
   // write this as part of Lab 2
-  for(int i = 0; i < 8; i++) {
+  for(i = 0; i < 8; i++) {
     if(data & (1 << i)) {
       sum += W[i];
       count++;
