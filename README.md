@@ -109,13 +109,33 @@ During movement, hold a bump switch: both wheels should stop when the 10 Hz chec
 ### Lab 4
 
 - Two main items: IR distance-sensor calibration through ADC and tachometer speed measurement through timer capture.
-- ADC sampling and filtering are already provided in `Lab4_ADC_IRSensors`. `LeftConvert()`, `CenterConvert()`, and `RightConvert()` in `inc/IRDistance.c` are still placeholders that return zero. Calibration measurements are needed before implementing them.
+- ADC sampling and filtering are already provided in `Lab4_ADC_IRSensors`. `LeftConvert()`, `CenterConvert()`, and `RightConvert()` in `inc/IRDistance.c` now use the supplied calibration table with piecewise linear interpolation. Physical distance verification is pending.
 - In CCS Expressions, watch `nl` (left, P9.1/ADC16), `nc` (center, P4.1/ADC12), and `nr` (right, P9.0/ADC17) in decimal. These are filtered ADC counts, not distances. The 14-bit ADC range is 0–16383.
 - Use Debug configuration, battery power on, no breakpoints, and Continuous Refresh. Move a flat obstacle along each sensor's viewing direction and confirm the corresponding reading changes.
 - For calibration, collect settled readings at 5 cm intervals from 5 to 50 cm for each sensor. Measure from the sensor face to the obstacle, not from the front of the robot. Each sensor must be measured separately at the same physical distances.
-- The conversion functions used by this project must return centimeters. Zero distances printed by UART are expected until these functions are implemented; use `nl`, `nc`, and `nr` to collect calibration data.
+- The conversion functions return centimeters, rounded to the nearest whole centimeter. The existing UART prints left, center, and right distances in that order; `nl`, `nc`, and `nr` remain filtered ADC counts.
 - Fit and verify each sensor separately using its measured data. Do not assume all three sensors share one calibration curve.
-- IR calibration is deferred because it depends on the physical robot. The three IR conversion functions remain unchanged until calibration readings are available.
+- Calibration data was supplied for this robot. Left and right use the 5-50 cm samples. Center uses only 10-50 cm: its ADC count rises from 13515 at 5 cm to 15728 at 10 cm, then falls. A single count can represent two distances, so the 5 cm center sample cannot be combined with the far-distance branch.
+- Center ADC 13515 maps to about 12 cm on the selected far-distance branch, even though it was also observed at 5 cm. Do not use this center conversion below 10 cm. ADC values outside each table's endpoints are clamped to the nearest supported distance, not extrapolated.
+- Most left/right points are estimates, not measurements. They are included as supplied, but matching these table values in software does not prove physical accuracy. Verify all three sensors with a ruler, especially 20 cm, and replace estimated points with measured values when possible.
+
+Calibration table (`*` means estimated; all unmarked points were supplied as measured):
+
+| Distance (cm) | Center `nc` | Right `nr` | Left `nl` |
+|---|---|---|---|
+| 5 | 13515 (excluded from center conversion) | 14000 | 14780 |
+| 10 | 15728 | 13427 | 13740 |
+| 15 | 10582 | 9106* | 9060* |
+| 20 | 7575 | 6581* | 6326* |
+| 25 | 5666 | 4978* | 4590* |
+| 30 | 4734 | 4195 | 3742 |
+| 35 | 3845 | 3448* | 2934* |
+| 40 | 3251 | 2950* | 2393* |
+| 45 | 2977 | 2720* | 2144* |
+| 50 | 2722 | 2505* | 1912* |
+
+For distance verification, build and debug `Lab4_ADC_IRSensors` in Debug configuration with battery power on. Open the XDS110 Application/User UART serial port at 115200 baud, 8 data bits, no parity, 1 stop bit, and no flow control. Run without breakpoints and compare the printed left/center/right distances with a ruler at 10, 20, 30, 40, and 50 cm, measuring each sensor separately from its face along its viewing direction.
+
 - Tachometer/RPM code is implemented; physical verification is pending. Right wheel uses P10.4/Timer_A3 CCR0 (`Period0`, `RightRPM`); left wheel uses P10.5/CCR1 (`Period2`, `LeftRPM`). The `Period2` name is inherited from the older starter code; RSLK MAX uses channel 1 for that input.
 - The standard encoder produces 360 rising-edge pulses per wheel revolution. Timer_A3 counts at 12 MHz, so wheel RPM = `12000000 * 60 / (360 * period)` = `2000000 / period`. Source: [TI tachometer lecture, slide 17](https://www.ti.com/lit/ml/sekp140/sekp140.pdf).
 - The first edge only establishes a timestamp. RPM is calculated from the second edge onward; a zero period returns zero instead of dividing by zero. RPM uses whole-number division.

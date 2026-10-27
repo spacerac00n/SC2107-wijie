@@ -3,7 +3,7 @@
  * @brief     Take infrared distance measurements
  * @details   Provide mid-level functions that convert raw ADC
  * values from the GP2Y0A21YK0F infrared distance sensors to
- * distances in mm.
+ * distances in cm.
  * @version   V1.0
  * @author    Valvano
  * @copyright Copyright 2017 by Jonathan W. Valvano, valvano@mail.utexas.edu,
@@ -58,7 +58,7 @@ policies, either expressed or implied, of the FreeBSD Project.
  * Convert ADC sample into distance for the GP2Y0A21YK0F
  * infrared distance sensor.
  * @param nl is the 14-bit ADC sample 0 to 16383
- * @return distance from robot center to left wall (units mm)
+ * @return distance from left sensor in cm, clamped to 5-50 cm
  * @brief  Convert left infrared distance measurement
  */
 int32_t LeftConvert(int32_t nl);
@@ -67,7 +67,8 @@ int32_t LeftConvert(int32_t nl);
  * Convert ADC sample into distance for the GP2Y0A21YK0F
  * infrared distance sensor.
  * @param nc is the 14-bit ADC sample 0 to 16383
- * @return distance from robot center to center wall (units mm)
+ * @return distance from center sensor in cm, clamped to 10-50 cm
+ * @note The near-distance branch below 10 cm cannot be distinguished reliably.
  * @brief  Convert center infrared distance measurement
  */
 int32_t CenterConvert(int32_t nc);
@@ -76,9 +77,9 @@ int32_t CenterConvert(int32_t nc);
  * Convert ADC sample into distance for the GP2Y0A21YK0F
  * infrared distance sensor.
  * @param nr is the 14-bit ADC sample 0 to 16383
- * @return distance from robot center to right wall (units mm)
+ * @return distance from right sensor in cm, clamped to 5-50 cm
  * @brief  Convert right infrared distance measurement
  */
-int32_t RightConvert(int32_t nr);      // returns right distance in mm
+int32_t RightConvert(int32_t nr);      // returns right distance in cm
 
 #endif /* IRDISTANCE_H_ */

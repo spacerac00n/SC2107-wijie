@@ -2,7 +2,7 @@
 // Runs on MSP432
 // Provide mid-level functions that convert raw ADC
 // values from the GP2Y0A21YK0F infrared distance sensors to
-// distances in mm.
+// distances in cm.
 // Jonathan Valvano
 // May 25, 2017
 
@@ -61,28 +61,52 @@ policies, either expressed or implied, of the FreeBSD Project.
  * Either via curve fitting (hyperbolic, polynomial, log etc), or piece-wise linear method.
  */
 int32_t LeftConvert(int32_t nl){        // returns left distance in cm
-  // write this for Lab 4
-    uint32_t length=0;
+    // 5, 10, ..., 50 cm. Only 5, 10 and 30 cm were measured; others estimated.
+    static const int32_t adc[10] = {
+        14780, 13740, 9060, 6326, 4590, 3742, 2934, 2393, 2144, 1912
+    };
+    int32_t i, span;
 
-
-
-    return length;
+    if(nl >= adc[0]) return 5;
+    for(i = 0; i < 9; i++){
+        if(nl >= adc[i+1]){
+            span = adc[i] - adc[i+1];
+            return 5 + 5*i + (5*(adc[i] - nl) + span/2)/span;
+        }
+    }
+    return 50;
 }
 
 int32_t CenterConvert(int32_t nc){   // returns center distance in cm
-  // write this for Lab 4
-    uint32_t length=0;
+    // 10, 15, ..., 50 cm. Exclude the ambiguous 5 cm reading (13515).
+    static const int32_t adc[9] = {
+        15728, 10582, 7575, 5666, 4734, 3845, 3251, 2977, 2722
+    };
+    int32_t i, span;
 
-
-
-    return length;
+    if(nc >= adc[0]) return 10;
+    for(i = 0; i < 8; i++){
+        if(nc >= adc[i+1]){
+            span = adc[i] - adc[i+1];
+            return 10 + 5*i + (5*(adc[i] - nc) + span/2)/span;
+        }
+    }
+    return 50;
 }
 
 int32_t RightConvert(int32_t nr){      // returns right distance in cm
-  // write this for Lab 4
-    uint32_t length=0;
+    // 5, 10, ..., 50 cm. Only 5, 10 and 30 cm were measured; others estimated.
+    static const int32_t adc[10] = {
+        14000, 13427, 9106, 6581, 4978, 4195, 3448, 2950, 2720, 2505
+    };
+    int32_t i, span;
 
-
-
-    return length;
+    if(nr >= adc[0]) return 5;
+    for(i = 0; i < 9; i++){
+        if(nr >= adc[i+1]){
+            span = adc[i] - adc[i+1];
+            return 5 + 5*i + (5*(adc[i] - nr) + span/2)/span;
+        }
+    }
+    return 50;
 }
