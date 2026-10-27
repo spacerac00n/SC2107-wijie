@@ -1,7 +1,7 @@
 // Lab07_FSMmain.c
 // Runs on MSP432
 // Student version of FSM lab, FSM with 2 inputs and 2 outputs.
-// Rather than real sensors and motors, it uses LaunchPad I/O
+// Uses center reflectance sensors and LaunchPad LEDs to simulate motors.
 // Daniel and Jonathan Valvano
 // March 17, 2017
 
@@ -48,17 +48,18 @@ policies, either expressed or implied, of the FreeBSD Project.
 #include "../inc/clock.h"
 #include "../inc/LaunchPad.h"
 #include "../inc/Texas.h"
+#include "../inc/Reflectance.h"
 
 /*(Left,Right) Motors, call LaunchPad_Output (positive logic)
 3   1,1     both motors, yellow means go straight
 2   1,0     left motor,  green  means turns right
 1   0,1     right motor, red    means turn left
 0   0,0     both off,    dark   means stop
-(Left,Right) Sensors, call LaunchPad_Input (positive logic)
-3   1,1     both buttons pushed means on line,
-2   1,0     SW2 pushed          means off to right
-1   0,1     SW1 pushed          means off to left
-0   0,0     neither button      means lost
+(Left,Right) Sensors, P7.4 and P7.3 (1 means black)
+3   1,1     both sensors black means on line
+2   1,0     left sensor black  means robot is right of line
+1   0,1     right sensor black means robot is left of line
+0   0,0     neither black      means lost
  */
 
 // Linked data structure
@@ -74,9 +75,10 @@ typedef const struct State State_t;
 #define Right     &fsm[2]
 
 State_t fsm[3]={
-  {0x03, 100, { Right, Left,   Center,  Center }},  // Center
-  {0x02, 100, { Left,  Center, Right,  Center }},  // Left
-  {0x01, 100, { Right, Left,   Center, Center }}   // Right
+  // Input:       00     01     10     11
+  {0x03, 500, { Right, Left,  Right, Center }},  // Center: lost -> default left turn
+  {0x02, 500, { Left,  Left,  Right, Center }},  // Left: keep turning right if lost
+  {0x01, 500, { Right, Left,  Right, Center }}   // Right: keep turning left if lost
 };
 
 
@@ -84,23 +86,24 @@ State_t *Spt;  // pointer to the current state
 uint32_t Input;
 uint32_t Output;
 /*Run FSM continuously
-1) Output depends on State (LaunchPad LED)
-2) Wait depends on State
-3) Input (LaunchPad buttons)
-4) Next depends on (Input,State)
+1) Read center reflectance sensors
+2) Next state depends on (Input,State)
+3) Output depends on State (LaunchPad LED)
+4) Wait depends on State
  */
 int main(void){ uint32_t heart=0;
   Clock_Init48MHz();
   LaunchPad_Init();
+  Reflectance_Init();
   TExaS_Init(LOGICANALYZER);  // optional
   Spt = Center;
   while(1){
+    Input = (Reflectance_Read(1000) >> 3) & 0x03; // P7.4:P7.3 -> bits 1:0
+    Spt = Spt->next[Input];       // choose state before updating its output
     Output = Spt->out;            // set output from FSM
-    LaunchPad_Output(Output);     // do output to two motors
+    LaunchPad_Output(Output);     // LEDs simulate the two motors
     TExaS_Set(Input<<2|Output);   // optional, send data to logic analyzer
     Clock_Delay1ms(Spt->delay);   // wait
-    Input = LaunchPad_Input();    // read sensors
-    Spt = Spt->next[Input];       // next depends on input and state
     heart = heart^1;
     LaunchPad_LED(heart);         // optional, debugging heartbeat
   }

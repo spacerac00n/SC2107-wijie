@@ -37,7 +37,7 @@ Keep the Learning section updated whenever the human learns something, asks for 
 ### Lab 2
 
 - Two main items: the GPIO reflectance driver and the FSM.
-- Reflectance bit readings have been verified on the robot. The FSM is still pending.
+- Reflectance bit readings have been verified on the robot. The FSM is implemented but still needs physical verification.
 - Turn on the robot's battery power. USB power to the LaunchPad alone does not confirm that the sensors are powered.
 - `Data` contains eight sensor bits. `1` means black and `0` means white. The leftmost bit is P7.7 and the rightmost bit is P7.0.
 - Example: `00011000` means the two center sensors, P7.4 and P7.3, detect black. All white gives `0x00`; all black gives `0xFF`.
@@ -47,6 +47,12 @@ Keep the Learning section updated whenever the human learns something, asks for 
 - Put the verification breakpoint on `Clock_Delay1ms(10);`, after `Data` and `Position` update. Keep Skip All Breakpoints off.
 - Do not pause or single-step during the sensor discharge measurement. Debugger delays change the reading.
 - Declaring `int i;` before `for(i = 0; ...)` avoids the loop-declaration compatibility issue encountered on the lab computer.
+- The FSM reads the center pair with `(Reflectance_Read(1000) >> 3) & 0x03`. Input bit 1 is P7.4 (left sensor); bit 0 is P7.3 (right sensor).
+- FSM input `11` gives yellow (straight), `01` gives green (turn right), and `10` gives red (turn left). These LEDs simulate motors; the robot does not drive in this lab.
+- State names describe the robot's position: Left means the robot is left of the line and must turn right. Right means it must turn left.
+- A one-sensor reading should keep the correct turn, rather than alternate between turning and going straight. The turn must also switch directly if the opposite sensor detects black.
+- When input is `00`, the FSM keeps its previous turn direction. If the previous state was Center, it defaults to turning left. This is a search choice, not a guarantee that the line will be found again.
+- The state delay is 500 ms for visible LED testing. Reducing it to 10 ms makes the wait 50 times shorter and allows faster corrections. Sensor-read time and, in later labs, motor response also affect the behavior.
 
 ### Lab 3
 
