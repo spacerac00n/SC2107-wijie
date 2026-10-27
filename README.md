@@ -16,4 +16,10 @@ The Mac has no direct connection to the robot. Git is used to transfer code betw
 
 Before switching computers, commit and push the intended changes. On the other computer, pull those changes before opening or building the relevant CCS project. Commit and push any changes made in the lab before returning to the Mac.
 
-Begin with Lab 1 guidance. Do not change robot code until the human requests implementation.
+## Collaboration preferences
+
+For each lab, state how many main items need to be completed and briefly explain their purpose. Lab 2 has two main items: the GPIO reflectance driver (including line position calculation) and the finite state machine (FSM).
+
+Prioritize code implementation, physical robot checks, and a clear overview of what is done and what remains. Assume the human already knows the fundamentals. After implementation, review the changes, show the relevant code, and explain what changed and why in simple, direct sentences. Distinguish checks performed on the Mac from results that still need verification on the robot.
+
+Follow the lab manual and change only what is needed for the requested task. Do not add extra features or unrelated code changes.

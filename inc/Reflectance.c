@@ -54,6 +54,7 @@ void Reflectance_Init(void) {
   // Configure P7.7-P7.0 as GPIO (used as I/O dynamically)
   P7->SEL0 &= ~0xFF;
   P7->SEL1 &= ~0xFF;
+  P7->REN = 0x00; // Disable pull resistors during capacitor discharge
   P7->DIR &= ~0xFF; // Start as input
 }
 

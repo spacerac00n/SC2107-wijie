@@ -59,7 +59,7 @@ int main(void){
   while(1){
     Data = Reflectance_Read(1000);
     //Data = Reflectance_Center(1000);
-    //Position = Reflectance_Position(Data);
+    Position = Reflectance_Position(Data);
     Clock_Delay1ms(10);
   }
 }
