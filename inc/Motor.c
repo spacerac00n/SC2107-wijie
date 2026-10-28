@@ -110,8 +110,8 @@ void Motor_Forward(uint16_t leftDuty, uint16_t rightDuty){
 
     P5->OUT &= ~0x30;
 
-    PWM_Duty3(leftDuty);
-    PWM_Duty4(rightDuty);
+    PWM_Duty3(rightDuty);
+    PWM_Duty4(leftDuty);
 
     //Enable L and R motor
     P3->OUT |= 0xC0;
@@ -132,8 +132,8 @@ void Motor_Right(uint16_t leftDuty, uint16_t rightDuty){
     P5->OUT &= ~0x10;
     P5->OUT |= 0x20;
 
-    PWM_Duty3(leftDuty);
-    PWM_Duty4(rightDuty);
+    PWM_Duty3(rightDuty);
+    PWM_Duty4(leftDuty);
 
     //Enable L and R motor
     P3->OUT |= 0xC0;
@@ -154,8 +154,8 @@ void Motor_Left(uint16_t leftDuty, uint16_t rightDuty){
     P5->OUT &= ~0x20;
     P5->OUT |= 0x10;
 
-    PWM_Duty3(leftDuty);
-    PWM_Duty4(rightDuty);
+    PWM_Duty3(rightDuty);
+    PWM_Duty4(leftDuty);
 
     //Enable L and R motor
     P3->OUT |= 0xC0;
@@ -175,8 +175,8 @@ void Motor_Backward(uint16_t leftDuty, uint16_t rightDuty){
 
     P5->OUT |= 0x30;
 
-    PWM_Duty3(leftDuty);
-    PWM_Duty4(rightDuty);
+    PWM_Duty3(rightDuty);
+    PWM_Duty4(leftDuty);
 
     //Enable L and R motor
     P3->OUT |= 0xC0;

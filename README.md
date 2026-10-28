@@ -110,6 +110,10 @@ Each movement lasts about one second. After stopping, the program waits for anot
 
 During movement, hold a bump switch: both wheels should stop when the 10 Hz check detects it, nominally within about 100 ms. Repeat for all six switches. The current code can resume motion on release if the one-second movement period has not ended; it does not latch an emergency stop. Do not use debugger Pause as the motor-stop test, because hardware PWM can continue while the CPU is halted.
 
+- Motor speed mapping was corrected after the readiness review. Lab 3 manual Figure 8 maps P2.6/Timer_A0 CCR3 to the right wheel and P2.7/CCR4 to the left wheel. All four movement functions now send `rightDuty` to `PWM_Duty3()` and `leftDuty` to `PWM_Duty4()`.
+- Equal duties such as `(3000,3000)` cannot reveal a left/right mapping error. Host register checks cover unequal duties in both orders, equal duties, and zero-duty cases for all four movement functions. Physical unequal-duty verification is pending.
+- For a physical check, temporarily change the first forward call in `Lab3_Timersmain.c` to `Motor_Forward(4000,2000)`: the left wheel should run faster. Reverse it to `(2000,4000)`: the right wheel should run faster. Support the wheels clear of the table, use the existing one-second movement/button sequence, and restore `(3000,3000)` afterward.
+
 ### Lab 4
 
 - Two main items: IR distance-sensor calibration through ADC and tachometer speed measurement through timer capture.
@@ -176,12 +180,12 @@ Independent readiness review, 28 October 2026 (IR accuracy excluded as requested
 |---|---|---|
 | Lab 1 | Incomplete | `Lab1_Assembly/convert.asm` still has an empty `Convert` routine, including no return instruction. C and debugging reference programs are present. |
 | Lab 2 | Complete | Reflectance driver, position calculation, and three-state FSM are implemented. Reflectance bits and FSM behavior passed physical tests. |
-| Lab 3 | Implemented, motor API fix needed | Sensors and wheel directions passed physical tests. All four motor movement functions send `leftDuty` to the right PWM channel (CCR3/P2.6) and `rightDuty` to the left (CCR4/P2.7). Equal-duty tests hide the error; fix before unequal-speed steering. |
+| Lab 3 | Code complete; mapping corrected after review | Sensors and wheel directions passed physical tests. The swapped motor duty arguments are now fixed in all four movement functions. Physical unequal-duty and bump-stop checks remain. |
 | Lab 4 | Code complete, verification remains | IR conversions and RPM capture/conversion are implemented. Ignore IR accuracy for this review. The left RPM/period pair still needs a stable snapshot; latest IR firmware demonstration is not yet physically confirmed. |
 
-- Overall: the basic demonstrations are largely prepared, but the full Lab 1–4 baseline is not yet complete. Complete the Lab 1 assembly routine and correct the motor duty mapping before treating the code as ready for general Lab 5 integration tasks.
+- Overall: the basic demonstrations are largely prepared, but the full Lab 1–4 baseline is not yet complete. The motor duty mapping is now corrected; the Lab 1 assembly routine still needs completion.
 - The published pre-known demonstrations are Lab 2 reflectance, Lab 3 bumps, and Lab 4 IR distance at 20 cm. Reflectance and all six bumps are physically confirmed. IR conversion code returns 20 for all supplied 20 cm ADC points; software agreement is not a physical accuracy check. The missing Lab 1 assembly routine does not block these three demonstrations.
-- Remaining robot checks: verify bump-triggered stopping for all six switches, compare wheel behavior using unequal duties after correcting the mapping, and obtain a stable left RPM/period pair. Do the final clean builds on the lab computer, not the Mac's missing-legacy-compiler setup.
+- Remaining robot checks: verify bump-triggered stopping for all six switches, retest wheel behavior using unequal duties, and obtain a stable left RPM/period pair. Do the final clean builds on the lab computer, not the Mac's missing-legacy-compiler setup.
 - Minor unused helper bug: `TimerA1_Stop()` disables IRQ12 (`0x1000`) instead of its CCR0 IRQ10 (`0x400`). Current lab programs do not call it, so this is not a blocker for their existing demos.
 - Priority-register compatibility: the legacy source assumes word-sized `NVIC->IP` entries. The Mac's newer CCS CMSIS header uses byte-sized entries. The actual lab PC headers were not available for this audit, so priority configuration is not certified across compiler/header versions. Keep the known-working lab toolchain for assessment builds.
 - Host audits checked the actual source using mock registers and supplied test data. They do not replace a CCS target build or physical timing checks. Existing user/IDE metadata and generated build changes were left untouched; no robot code was changed during this audit.
