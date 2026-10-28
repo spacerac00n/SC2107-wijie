@@ -169,3 +169,20 @@ CCS serial Terminal steps:
 ### Lab 5
 
 - The assessment builds on the knowledge and practical work from Labs 1–4.
+
+Independent readiness review, 28 October 2026 (IR accuracy excluded as requested):
+
+| Lab | Basic code status | Evidence / remaining work |
+|---|---|---|
+| Lab 1 | Incomplete | `Lab1_Assembly/convert.asm` still has an empty `Convert` routine, including no return instruction. C and debugging reference programs are present. |
+| Lab 2 | Complete | Reflectance driver, position calculation, and three-state FSM are implemented. Reflectance bits and FSM behavior passed physical tests. |
+| Lab 3 | Implemented, motor API fix needed | Sensors and wheel directions passed physical tests. All four motor movement functions send `leftDuty` to the right PWM channel (CCR3/P2.6) and `rightDuty` to the left (CCR4/P2.7). Equal-duty tests hide the error; fix before unequal-speed steering. |
+| Lab 4 | Code complete, verification remains | IR conversions and RPM capture/conversion are implemented. Ignore IR accuracy for this review. The left RPM/period pair still needs a stable snapshot; latest IR firmware demonstration is not yet physically confirmed. |
+
+- Overall: the basic demonstrations are largely prepared, but the full Lab 1–4 baseline is not yet complete. Complete the Lab 1 assembly routine and correct the motor duty mapping before treating the code as ready for general Lab 5 integration tasks.
+- The published pre-known demonstrations are Lab 2 reflectance, Lab 3 bumps, and Lab 4 IR distance at 20 cm. Reflectance and all six bumps are physically confirmed. IR conversion code returns 20 for all supplied 20 cm ADC points; software agreement is not a physical accuracy check. The missing Lab 1 assembly routine does not block these three demonstrations.
+- Remaining robot checks: verify bump-triggered stopping for all six switches, compare wheel behavior using unequal duties after correcting the mapping, and obtain a stable left RPM/period pair. Do the final clean builds on the lab computer, not the Mac's missing-legacy-compiler setup.
+- Minor unused helper bug: `TimerA1_Stop()` disables IRQ12 (`0x1000`) instead of its CCR0 IRQ10 (`0x400`). Current lab programs do not call it, so this is not a blocker for their existing demos.
+- Priority-register compatibility: the legacy source assumes word-sized `NVIC->IP` entries. The Mac's newer CCS CMSIS header uses byte-sized entries. The actual lab PC headers were not available for this audit, so priority configuration is not certified across compiler/header versions. Keep the known-working lab toolchain for assessment builds.
+- Host audits checked the actual source using mock registers and supplied test data. They do not replace a CCS target build or physical timing checks. Existing user/IDE metadata and generated build changes were left untouched; no robot code was changed during this audit.
+- Lab 5 is AI-OFF and web search is not allowed. Before assessment, practice editing, building, and demonstrating one single-sensor task and one combined sensor/motor task without assistance. Existing demo programs do not implement the unseen assessment tasks for you.
