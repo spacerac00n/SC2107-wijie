@@ -156,6 +156,11 @@ CCS serial Terminal steps:
 - Tachometer counters, period values, and RPM values still need confirmation. Wheel motion alone does not verify speed measurement.
 - Reported tachometer readings: `Period0 = 22888`, `Period2 = 24399`, `RightRPM = 87`, `LeftRPM = 84`. The right pair matches integer division (`2000000 / 22888 = 87`). The left period would give 81 RPM, so that pair needs a consistent snapshot before marking verification complete.
 - Continuous Refresh can read a period and its RPM at different moments. For an arithmetic check, support the wheels clear of the table, pause the processor once, read the stable values, and turn off battery power afterward. CPU Pause alone does not stop the wheels.
+- Timer capture measures actual wheel speed. The wheel encoder produces pulses; on each rising edge, timer hardware copies its current count into a capture register. Subtract two successive timestamps to get the pulse period, then convert that period to RPM.
+- Know the difference: Lab 3 timer compare generates PWM to command a motor; Lab 4 timer capture measures encoder pulses to find how fast the wheel actually turns. The same PWM command does not guarantee the same RPM on both wheels.
+- Know how to trace each input: right encoder P10.4 -> Timer_A3 CCR0 -> `TA3_0_IRQHandler()` -> `PeriodMeasure0()`; left encoder P10.5 -> CCR1 -> shared `TA3_N_IRQHandler()` -> `PeriodMeasure2()`.
+- Know why two interrupt handlers are used: CCR0 has its own vector; the other capture/compare channels share another vector. Each handler acknowledges its interrupt and passes the captured timestamp to the matching callback.
+- For RPM conversion, know the timer tick frequency and encoder pulses per wheel revolution. Here they are 12 MHz and 360 pulses/revolution. A smaller pulse period means a faster wheel. These speed readings can support speed matching, speed control, and detecting a wheel that slows under load; those controllers are not implemented in this exercise.
 
 ### Lab 5
 
