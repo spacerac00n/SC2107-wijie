@@ -173,6 +173,8 @@ CCS serial Terminal steps:
 ### Lab 5
 
 - The assessment builds on the knowledge and practical work from Labs 1–4.
+- For Lab 5 task preparation or review, first read the [agent-facing Lab 1–4 code index](labs/lab5-assessment/README.md). It maps the briefing's pre-known and L/M/H examples to base projects, functions, pins, shared resources, dependencies, and physical checks. The index is local-only because `labs/` is ignored; copy it and the PDFs separately if another computer or agent needs them.
+- The Lab 5 briefing specifies the IR demonstration at 20–30 cm, while the manual specifies 20 cm; both use +/-5 cm accuracy. The sample M-task slide also differs between its turn-right description and stop-at-line assessment text. Follow the actual released task and clarify conflicting criteria rather than assuming an example is definitive.
 
 Independent readiness review, 28 October 2026 (IR accuracy excluded as requested):
 
