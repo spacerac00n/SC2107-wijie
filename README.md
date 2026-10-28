@@ -33,6 +33,10 @@ Keep the Learning section updated whenever the human learns something, asks for 
 - Lab 1 covers CCS, debugging, GPIO inspection, embedded C, assembly, and linker memory layout.
 - Most work is observation and debugging. The main coding task is the short `Convert` assembly routine.
 - Build compiles and links the code. Debug loads the program onto the MSP432 and starts a debug session.
+- A CCS error saying the project compiler is not installed is a toolchain setup issue, not evidence of a source-code error. These projects request legacy TI ARM compiler versions in the 16.9.x.LTS family.
+- The Mac's CCS 21.0.1 installation was found to contain TI Arm Clang 5.1.1.LTS and an MSP430 compiler, but no legacy TI ARM compiler. MSP430 is not the MSP432's compiler, and TI Arm Clang is a different toolchain from legacy `armcl`.
+- The current workflow still uses the Mac for editing and the lab computer for compilation, flashing, and robot debugging. Building on the Mac would require installing/discovering a suitable legacy ARM-CGT toolchain and validating the project against it. Do not switch the shared projects to Clang just to remove the missing-compiler warning; that is a separate migration.
+- CCS import can modify project metadata and regenerate build files. Do not confuse those local IDE changes with intentional robot source changes.
 
 ### Lab 2
 
