@@ -2,22 +2,20 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
 # Add inputs and outputs from these tool invocations to the build variables 
 CMD_SRCS += \
 ../msp432p401r.cmd 
 
 C_SRCS += \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/ADC14.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/Clock.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/CortexM.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/IRDistance.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/LPF.c \
+/Users/grassjelly/Desktop/SC2107/inc/ADC14.c \
+/Users/grassjelly/Desktop/SC2107/inc/Clock.c \
+/Users/grassjelly/Desktop/SC2107/inc/CortexM.c \
+/Users/grassjelly/Desktop/SC2107/inc/IRDistance.c \
+/Users/grassjelly/Desktop/SC2107/inc/LPF.c \
 ../Lab4_ADCmain.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/LaunchPad.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/TimerA1.c \
-D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/UART0.c \
+/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c \
+/Users/grassjelly/Desktop/SC2107/inc/TimerA1.c \
+/Users/grassjelly/Desktop/SC2107/inc/UART0.c \
 ../startup_msp432p401r_ccs.c \
 ../system_msp432p401r.c 
 
@@ -74,15 +72,15 @@ C_DEPS__QUOTED += \
 "system_msp432p401r.d" 
 
 C_SRCS__QUOTED += \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/ADC14.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/Clock.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/CortexM.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/IRDistance.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/LPF.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/ADC14.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Clock.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/CortexM.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/IRDistance.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/LPF.c" \
 "../Lab4_ADCmain.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/LaunchPad.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/TimerA1.c" \
-"D:/CE2007/RSLK-Max-SC2107Labs-students-08072026/SC2107/inc/UART0.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/TimerA1.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/UART0.c" \
 "../startup_msp432p401r_ccs.c" \
 "../system_msp432p401r.c" 
 

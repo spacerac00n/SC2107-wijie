@@ -2,19 +2,17 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
 # Add inputs and outputs from these tool invocations to the build variables 
 CMD_SRCS += \
 ../msp432p401r.cmd 
 
 C_SRCS += \
-C:/temp/CE2007/inc/Bump.c \
-C:/temp/CE2007/inc/Clock.c \
-C:/temp/CE2007/inc/LaunchPad.c \
-C:/temp/CE2007/inc/MotorSimple.c \
+/Users/grassjelly/Desktop/SC2107/inc/Bump.c \
+/Users/grassjelly/Desktop/SC2107/inc/Clock.c \
+/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c \
+/Users/grassjelly/Desktop/SC2107/inc/MotorSimple.c \
 ../Simple_Motorsmain.c \
-C:/temp/CE2007/inc/SysTick.c \
+/Users/grassjelly/Desktop/SC2107/inc/SysTick.c \
 ../startup_msp432p401r_ccs.c \
 ../system_msp432p401r.c 
 
@@ -59,12 +57,12 @@ C_DEPS__QUOTED += \
 "system_msp432p401r.d" 
 
 C_SRCS__QUOTED += \
-"C:/temp/CE2007/inc/Bump.c" \
-"C:/temp/CE2007/inc/Clock.c" \
-"C:/temp/CE2007/inc/LaunchPad.c" \
-"C:/temp/CE2007/inc/MotorSimple.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Bump.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Clock.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/MotorSimple.c" \
 "../Simple_Motorsmain.c" \
-"C:/temp/CE2007/inc/SysTick.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/SysTick.c" \
 "../startup_msp432p401r_ccs.c" \
 "../system_msp432p401r.c" 
 

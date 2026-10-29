@@ -2,31 +2,29 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
 # Add inputs and outputs from these tool invocations to the build variables 
 CMD_SRCS += \
 ../msp432p401r.cmd 
 
 C_SRCS += \
-C:/temp/CE2007/inc/ADC14.c \
-C:/temp/CE2007/inc/Bump.c \
-C:/temp/CE2007/inc/Clock.c \
-C:/temp/CE2007/inc/CortexM.c \
-C:/temp/CE2007/inc/IRDistance.c \
-C:/temp/CE2007/inc/LPF.c \
+/Users/grassjelly/Desktop/SC2107/inc/ADC14.c \
+/Users/grassjelly/Desktop/SC2107/inc/Bump.c \
+/Users/grassjelly/Desktop/SC2107/inc/Clock.c \
+/Users/grassjelly/Desktop/SC2107/inc/CortexM.c \
+/Users/grassjelly/Desktop/SC2107/inc/IRDistance.c \
+/Users/grassjelly/Desktop/SC2107/inc/LPF.c \
 ../Lab17_Control.c \
-C:/temp/CE2007/inc/LaunchPad.c \
-C:/temp/CE2007/inc/Motor.c \
-C:/temp/CE2007/inc/Nokia5110.c \
-C:/temp/CE2007/inc/PWM.c \
-C:/temp/CE2007/inc/Reflectance.c \
-C:/temp/CE2007/inc/SysTickInts.c \
-C:/temp/CE2007/inc/TA3InputCapture.c \
-C:/temp/CE2007/inc/TExaS.c \
-C:/temp/CE2007/inc/Tachometer.c \
-C:/temp/CE2007/inc/TimerA1.c \
-C:/temp/CE2007/inc/UART0.c \
+/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c \
+/Users/grassjelly/Desktop/SC2107/inc/Motor.c \
+/Users/grassjelly/Desktop/SC2107/inc/Nokia5110.c \
+/Users/grassjelly/Desktop/SC2107/inc/PWM.c \
+/Users/grassjelly/Desktop/SC2107/inc/Reflectance.c \
+/Users/grassjelly/Desktop/SC2107/inc/SysTickInts.c \
+/Users/grassjelly/Desktop/SC2107/inc/TA3InputCapture.c \
+/Users/grassjelly/Desktop/SC2107/inc/TExaS.c \
+/Users/grassjelly/Desktop/SC2107/inc/Tachometer.c \
+/Users/grassjelly/Desktop/SC2107/inc/TimerA1.c \
+/Users/grassjelly/Desktop/SC2107/inc/UART0.c \
 ../startup_msp432p401r_ccs.c \
 ../system_msp432p401r.c 
 
@@ -119,24 +117,24 @@ C_DEPS__QUOTED += \
 "system_msp432p401r.d" 
 
 C_SRCS__QUOTED += \
-"C:/temp/CE2007/inc/ADC14.c" \
-"C:/temp/CE2007/inc/Bump.c" \
-"C:/temp/CE2007/inc/Clock.c" \
-"C:/temp/CE2007/inc/CortexM.c" \
-"C:/temp/CE2007/inc/IRDistance.c" \
-"C:/temp/CE2007/inc/LPF.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/ADC14.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Bump.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Clock.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/CortexM.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/IRDistance.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/LPF.c" \
 "../Lab17_Control.c" \
-"C:/temp/CE2007/inc/LaunchPad.c" \
-"C:/temp/CE2007/inc/Motor.c" \
-"C:/temp/CE2007/inc/Nokia5110.c" \
-"C:/temp/CE2007/inc/PWM.c" \
-"C:/temp/CE2007/inc/Reflectance.c" \
-"C:/temp/CE2007/inc/SysTickInts.c" \
-"C:/temp/CE2007/inc/TA3InputCapture.c" \
-"C:/temp/CE2007/inc/TExaS.c" \
-"C:/temp/CE2007/inc/Tachometer.c" \
-"C:/temp/CE2007/inc/TimerA1.c" \
-"C:/temp/CE2007/inc/UART0.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/LaunchPad.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Motor.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Nokia5110.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/PWM.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Reflectance.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/SysTickInts.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/TA3InputCapture.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/TExaS.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/Tachometer.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/TimerA1.c" \
+"/Users/grassjelly/Desktop/SC2107/inc/UART0.c" \
 "../startup_msp432p401r_ccs.c" \
 "../system_msp432p401r.c" 
 

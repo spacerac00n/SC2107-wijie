@@ -2,10 +2,6 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
-CG_TOOL_ROOT := C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS
-
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
 
@@ -13,7 +9,6 @@ ORDERED_OBJS += \
 "./ADC14.obj" \
 "./AP.obj" \
 "./Bump.obj" \
-"./BumpInt.obj" \
 "./Clock.obj" \
 "./CortexM.obj" \
 "./EUSCIA0.obj" \
@@ -29,6 +24,7 @@ ORDERED_OBJS += \
 "./PWM.obj" \
 "./Reflectance.obj" \
 "./SysTick.obj" \
+"./SysTickInts.obj" \
 "./TA3InputCapture.obj" \
 "./TExaS.obj" \
 "./Tachometer.obj" \
@@ -47,8 +43,8 @@ $(GEN_CMDS__FLAG) \
 
 -include ../makefile.init
 
-RM := DEL /F
-RMDIR := RMDIR /S/Q
+RM := rm -rf
+RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -93,9 +89,6 @@ endif
 ifneq ($(strip $(S64_DEPS)),)
 -include $(S64_DEPS)
 endif
-ifneq ($(strip $(INO_DEPS)),)
--include $(INO_DEPS)
-endif
 ifneq ($(strip $(CLA_DEPS)),)
 -include $(CLA_DEPS)
 endif
@@ -110,9 +103,6 @@ ifneq ($(strip $(C62_DEPS)),)
 endif
 ifneq ($(strip $(C67_DEPS)),)
 -include $(C67_DEPS)
-endif
-ifneq ($(strip $(PDE_DEPS)),)
--include $(PDE_DEPS)
 endif
 ifneq ($(strip $(K_DEPS)),)
 -include $(K_DEPS)
@@ -150,16 +140,10 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-inc.out \
+inc.out 
 
 EXE_OUTPUTS__QUOTED += \
-"inc.out" \
-
-BIN_OUTPUTS += \
-inc.hex \
-
-BIN_OUTPUTS__QUOTED += \
-"inc.hex" \
+"inc.out" 
 
 
 # All Target
@@ -168,25 +152,16 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 
 # Tool invocations
 inc.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
-	@echo 'Building target: "$@"'
-	@echo 'Invoking: MSP432 Linker'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all --define=__MSP432P401R__ --define=ccs -g --c99 --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"inc.map" --heap_size=1024 --stack_size=512 -i"C:/ti/ccsv7/ccs_base/arm/include" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="inc_linkInfo.xml" --rom_model -o "inc.out" $(ORDERED_OBJS)
+	@echo 'MSP432 Linker - building target: "$@"'
+	"" -z -m"inc.map" --heap_size=1024 --stack_size=512 -i"/Applications/ti/ccs2101/ccs/ccs_base/arm/include" -i"/lib" -i"/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="inc_linkInfo.xml" --rom_model -o "inc.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-
-inc.hex: $(EXE_OUTPUTS)
-	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
-	@echo 'Invoking: MSP432 Hex Utility'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armhex" --memwidth=8 --romwidth=8 -o "inc.hex" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "ADC14.obj" "AP.obj" "Bump.obj" "BumpInt.obj" "Clock.obj" "CortexM.obj" "EUSCIA0.obj" "FIFO0.obj" "FlashProgram.obj" "GPIO.obj" "IRDistance.obj" "LPF.obj" "LaunchPad.obj" "Motor.obj" "MotorSimple.obj" "Nokia5110.obj" "PWM.obj" "Reflectance.obj" "SysTick.obj" "TA3InputCapture.obj" "TExaS.obj" "Tachometer.obj" "TimerA0.obj" "TimerA1.obj" "TimerA2.obj" "UART0.obj" "UART1.obj" "Ultrasound.obj" "incmain.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
-	-$(RM) "ADC14.d" "AP.d" "Bump.d" "BumpInt.d" "Clock.d" "CortexM.d" "EUSCIA0.d" "FIFO0.d" "FlashProgram.d" "GPIO.d" "IRDistance.d" "LPF.d" "LaunchPad.d" "Motor.d" "MotorSimple.d" "Nokia5110.d" "PWM.d" "Reflectance.d" "SysTick.d" "TA3InputCapture.d" "TExaS.d" "Tachometer.d" "TimerA0.d" "TimerA1.d" "TimerA2.d" "UART0.d" "UART1.d" "Ultrasound.d" "incmain.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
-	-@echo 'Finished clean'
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) "ADC14.obj" "AP.obj" "Bump.obj" "Clock.obj" "CortexM.obj" "EUSCIA0.obj" "FIFO0.obj" "FlashProgram.obj" "GPIO.obj" "IRDistance.obj" "LPF.obj" "LaunchPad.obj" "Motor.obj" "MotorSimple.obj" "Nokia5110.obj" "PWM.obj" "Reflectance.obj" "SysTick.obj" "SysTickInts.obj" "TA3InputCapture.obj" "TExaS.obj" "Tachometer.obj" "TimerA0.obj" "TimerA1.obj" "TimerA2.obj" "UART0.obj" "UART1.obj" "Ultrasound.obj" "incmain.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
+	-$(RM) "ADC14.d" "AP.d" "Bump.d" "Clock.d" "CortexM.d" "EUSCIA0.d" "FIFO0.d" "FlashProgram.d" "GPIO.d" "IRDistance.d" "LPF.d" "LaunchPad.d" "Motor.d" "MotorSimple.d" "Nokia5110.d" "PWM.d" "Reflectance.d" "SysTick.d" "SysTickInts.d" "TA3InputCapture.d" "TExaS.d" "Tachometer.d" "TimerA0.d" "TimerA1.d" "TimerA2.d" "UART0.d" "UART1.d" "Ultrasound.d" "incmain.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents
