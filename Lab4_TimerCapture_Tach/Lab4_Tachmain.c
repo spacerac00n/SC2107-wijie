@@ -52,7 +52,10 @@ policies, either expressed or implied, of the FreeBSD Project.
 #include "../inc/Tachometer.h"
 #include "../inc/TA3InputCapture.h"
 #include "../inc/TExaS.h"
+#include "../inc/Bump.h"
 #include "../inc/UART0.h"
+
+volatile uint8_t bump_data = 0;
 
 #define P2_4 (*((volatile uint8_t *)(0x42098070)))
 #define P2_3 (*((volatile uint8_t *)(0x4209806C)))
@@ -62,14 +65,14 @@ policies, either expressed or implied, of the FreeBSD Project.
 
 //#define PERIOD 1000  // must be even
 
-#define RPM_FACTOR 2000000u    // 12,000,000 timer ticks/s * 60 / 360 pulses/rev
+#define RPM_FACTOR 2000000u    // 12 MHz * 60 seconds / 360 pulses per revolution
 
-volatile uint32_t RightRPM=0, LeftRPM=0;
-volatile uint16_t Period0;     // Right wheel, (1/SMCLK) units = 83.3 ns
+volatile uint32_t RightRPM = 0, LeftRPM = 0;
+volatile uint16_t Period0;     // Right wheel, timer ticks at 12 MHz
 uint16_t First0=0;             // Timer A3 first edge, P10.4
 volatile uint32_t Done0=0;     // incremented on each rising edge
 
-volatile uint16_t Period2;     // Left wheel, (1/SMCLK) units = 83.3 ns
+volatile uint16_t Period2;     // Left wheel, timer ticks at 12 MHz
 uint16_t First2=0;             // Timer A3 first edge, P10.5 on RSLK MAX
 volatile uint32_t Done2=0;     // incremented on each rising edge
 
