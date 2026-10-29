@@ -52,7 +52,6 @@ policies, either expressed or implied, of the FreeBSD Project.
 #include "../inc/Tachometer.h"
 #include "../inc/TA3InputCapture.h"
 #include "../inc/TExaS.h"
-#include "../inc/Bump.h"
 #include "../inc/UART0.h"
 
 #define P2_4 (*((volatile uint8_t *)(0x42098070)))
