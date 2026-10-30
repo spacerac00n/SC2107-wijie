@@ -1,4 +1,4 @@
-# SC2107-wijie
+# SC2107-wijie — Cloud environment available
 
 - Agent-assisted preparation for SC2107 Lab 5 on the TI RSLK MAX; Labs 1-4 supply the drivers and reference code.
 
